@@ -128,8 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="TZVR-IT-2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeometricShape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

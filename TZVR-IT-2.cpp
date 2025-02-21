@@ -1,11 +1,41 @@
-﻿// TZVR-IT-2.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include "GeometricShape.h"
 
-#include <iostream>
+static void sortShapesByArea(std::vector<GeometricShape*>& shapes) {
+    std::sort(shapes.begin(), shapes.end(), [](const GeometricShape* a, const GeometricShape* b) {
+        return a->getArea() < b->getArea();
+        });
+}
 
-int main()
-{
-    std::cout << "Hello World!\n";
+// Вывод информации о фигурах в консоль
+static void printShapes(const std::vector<GeometricShape*>& shapes) {
+    for (const auto& shape : shapes) {
+        std::cout << shape->getName() <<" S = " << shape->getArea() << std::endl;
+    }
+}
+
+
+int main() {
+    std::vector<GeometricShape*> shapes = {
+        new Circle(3),
+        new Triangle(3, 4, 5),
+        new Rectangle(4, 5),
+        new Rectangle(6, 2)
+    };
+
+    std::cout << "Before sort:" << std::endl;
+    printShapes(shapes);
+
+    sortShapesByArea(shapes);
+
+    std::cout << "After sort:" << std::endl;
+    printShapes(shapes);
+
+    // Очистка памяти
+    for (auto shape : shapes) {
+        delete shape;
+    }
+
+    return 0;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
