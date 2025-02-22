@@ -17,6 +17,7 @@ static void printShapes(const std::vector<GeometricShape*>& shapes) {
     std::cout << std::endl;
 }
 
+// Тут делаем абсолютно случайный массив разных фигур
 std::vector<GeometricShape*> generateRandomShapesAndPrint(int vectorSize) {
     std::srand(static_cast<unsigned>(std::time(0)));
     std::vector<GeometricShape*> vec;
