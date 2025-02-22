@@ -33,3 +33,7 @@ double Triangle::getArea() const {
     // —читаем площадь по формуле √ерона
     return std::sqrt(s * (s - a) * (s - b) * (s - c));
 }
+
+void Triangle::printInfo() const {
+    std::cout << "Triangle a = " << a << " b = " << b << " c = " << c << " S = " << getArea() << std::endl;
+}

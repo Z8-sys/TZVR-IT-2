@@ -1,6 +1,5 @@
 #ifndef GEOMETRICSHAPE_H
 #define GEOMETRICSHAPE_H
-#define M_PI 3.14159265358979323846
 
 #include <iostream>
 #include <vector>
@@ -27,6 +26,9 @@ public:
     // Абстрактный метод для расчета площади
     virtual double getArea() const = 0;
 
+    //Абстрактный метод для вывода информации о фигуре
+    virtual void printInfo() const = 0;
+
     // Метод для получения названия фигуры
     std::string getName() const {return shapeName;}
 };
@@ -49,9 +51,9 @@ public:
     // Деструктор
     ~Circle() override;
 
-    bool isValidCircle() const;
-
     double getArea() const override;
+
+    void printInfo() const override;
 };
 
 class Triangle : public GeometricShape {
@@ -74,6 +76,8 @@ public:
     bool isValidTriangle() const;
 
     double getArea() const override;
+
+    void printInfo() const override;
 };
 
 class Rectangle : public GeometricShape {
@@ -93,9 +97,9 @@ public:
     // Деструктор
     ~Rectangle() override;
 
-    bool isValidRectangle() const;
-
     double getArea() const override;
+
+    void printInfo() const override;
 };
 
 #endif // GEOMETRICSHAPE_H

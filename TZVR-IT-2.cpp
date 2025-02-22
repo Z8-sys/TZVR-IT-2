@@ -1,5 +1,8 @@
 ﻿#include "GeometricShape.h"
 
+#include <cstdlib>
+#include <ctime> 
+
 static void sortShapesByArea(std::vector<GeometricShape*>& shapes) {
     std::sort(shapes.begin(), shapes.end(), [](const GeometricShape* a, const GeometricShape* b) {
         return a->getArea() < b->getArea();
@@ -9,26 +12,47 @@ static void sortShapesByArea(std::vector<GeometricShape*>& shapes) {
 // Вывод информации о фигурах в консоль
 static void printShapes(const std::vector<GeometricShape*>& shapes) {
     for (const auto& shape : shapes) {
-        std::cout << shape->getName() <<" S = " << shape->getArea() << std::endl;
+        shape->printInfo();
     }
+    std::cout << std::endl;
+}
+
+std::vector<GeometricShape*> generateRandomShapesAndPrint(int vectorSize) {
+    std::srand(static_cast<unsigned>(std::time(0)));
+    std::vector<GeometricShape*> vec;
+    for (int j = 0; j < vectorSize; ++j) {
+        switch (std::rand() % 3) {
+        case 0: vec.push_back(new Circle(std::rand() % 10)); break;
+        case 1: vec.push_back(new Triangle(3 + std::rand() % 7, 3 + std::rand() % 7, 3 + std::rand() % 7)); break;
+        case 2: vec.push_back(new Rectangle(std::rand() % 10, std::rand() % 10)); break;
+        }
+        vec.back()->printInfo();
+    }
+    return vec;
 }
 
 
 int main() {
+    std::srand(static_cast<unsigned>(std::time(0)));
+    //Граничные случаи
+    std::cout << "All invalid test:" << std::endl;
     std::vector<GeometricShape*> shapes = {
-        new Circle(3),
-        new Triangle(3, 4, 5),
-        new Rectangle(4, 5),
-        new Rectangle(6, 2)
+        new Circle(-3),
+        new Triangle(10, 1, 5),
+        new Rectangle(-4, -5),
+        new Triangle(5, -1, 5)
     };
-
-    std::cout << "Before sort:" << std::endl;
     printShapes(shapes);
 
-    sortShapesByArea(shapes);
-
-    std::cout << "After sort:" << std::endl;
-    printShapes(shapes);
+    int n = 3; //Количество раз
+    std::cout << "Random shape test sort:" << std::endl;
+    for (int i = 0; i < n; i++) {
+        std::cout << "Before sort:" << std::endl;
+        shapes = generateRandomShapesAndPrint(7 + rand() % 10);
+        sortShapesByArea(shapes);
+        std::cout << "\nAfter sort:" << std::endl;
+        printShapes(shapes);
+    }
 
     // Очистка памяти
     for (auto shape : shapes) {
@@ -38,13 +62,113 @@ int main() {
     return 0;
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+/*
+Пример работы
+All invalid test:
+Invalid circle
+Invalid triangle
+Invalid rectangle
+Invalid triangle
+Circle r = -3 S = 28.2743
+Triangle a = 0 b = 0 c = 0 S = 0
+Rectangle a = 0 b = 0 S = 0
+Triangle a = 0 b = 0 c = 0 S = 0
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+Random shape test sort:
+Before sort:
+Circle r = 2 S = 12.5664
+Circle r = 3 S = 28.2743
+Circle r = 3 S = 28.2743
+Triangle a = 4 b = 3 c = 3 S = 4.47214
+Circle r = 8 S = 201.062
+Triangle a = 6 b = 3 c = 4 S = 5.33268
+Rectangle a = 9 b = 3 S = 27
+Invalid triangle
+Triangle a = 0 b = 0 c = 0 S = 0
+Invalid triangle
+Triangle a = 0 b = 0 c = 0 S = 0
+Triangle a = 8 b = 6 c = 9 S = 23.5253
+Circle r = 1 S = 3.14159
+Rectangle a = 0 b = 2 S = 0
+Triangle a = 7 b = 7 c = 3 S = 10.2561
+Triangle a = 3 b = 8 c = 7 S = 10.3923
+Triangle a = 9 b = 8 c = 3 S = 11.8322
+Rectangle a = 4 b = 2 S = 8
+
+After sort:
+Triangle a = 0 b = 0 c = 0 S = 0
+Triangle a = 0 b = 0 c = 0 S = 0
+Rectangle a = 0 b = 2 S = 0
+Circle r = 1 S = 3.14159
+Triangle a = 4 b = 3 c = 3 S = 4.47214
+Triangle a = 6 b = 3 c = 4 S = 5.33268
+Rectangle a = 4 b = 2 S = 8
+Triangle a = 7 b = 7 c = 3 S = 10.2561
+Triangle a = 3 b = 8 c = 7 S = 10.3923
+Triangle a = 9 b = 8 c = 3 S = 11.8322
+Circle r = 2 S = 12.5664
+Triangle a = 8 b = 6 c = 9 S = 23.5253
+Rectangle a = 9 b = 3 S = 27
+Circle r = 3 S = 28.2743
+Circle r = 3 S = 28.2743
+Circle r = 8 S = 201.062
+
+Before sort:
+Circle r = 2 S = 12.5664
+Circle r = 3 S = 28.2743
+Circle r = 3 S = 28.2743
+Triangle a = 4 b = 3 c = 3 S = 4.47214
+Circle r = 8 S = 201.062
+Triangle a = 6 b = 3 c = 4 S = 5.33268
+Rectangle a = 9 b = 3 S = 27
+Invalid triangle
+Triangle a = 0 b = 0 c = 0 S = 0
+Invalid triangle
+Triangle a = 0 b = 0 c = 0 S = 0
+Triangle a = 8 b = 6 c = 9 S = 23.5253
+Circle r = 1 S = 3.14159
+Rectangle a = 0 b = 2 S = 0
+Triangle a = 7 b = 7 c = 3 S = 10.2561
+
+After sort:
+Triangle a = 0 b = 0 c = 0 S = 0
+Triangle a = 0 b = 0 c = 0 S = 0
+Rectangle a = 0 b = 2 S = 0
+Circle r = 1 S = 3.14159
+Triangle a = 4 b = 3 c = 3 S = 4.47214
+Triangle a = 6 b = 3 c = 4 S = 5.33268
+Triangle a = 7 b = 7 c = 3 S = 10.2561
+Circle r = 2 S = 12.5664
+Triangle a = 8 b = 6 c = 9 S = 23.5253
+Rectangle a = 9 b = 3 S = 27
+Circle r = 3 S = 28.2743
+Circle r = 3 S = 28.2743
+Circle r = 8 S = 201.062
+
+Before sort:
+Circle r = 2 S = 12.5664
+Circle r = 3 S = 28.2743
+Circle r = 3 S = 28.2743
+Triangle a = 4 b = 3 c = 3 S = 4.47214
+Circle r = 8 S = 201.062
+Triangle a = 6 b = 3 c = 4 S = 5.33268
+Rectangle a = 9 b = 3 S = 27
+Invalid triangle
+Triangle a = 0 b = 0 c = 0 S = 0
+Invalid triangle
+Triangle a = 0 b = 0 c = 0 S = 0
+Triangle a = 8 b = 6 c = 9 S = 23.5253
+
+After sort:
+Triangle a = 0 b = 0 c = 0 S = 0
+Triangle a = 0 b = 0 c = 0 S = 0
+Triangle a = 4 b = 3 c = 3 S = 4.47214
+Triangle a = 6 b = 3 c = 4 S = 5.33268
+Circle r = 2 S = 12.5664
+Triangle a = 8 b = 6 c = 9 S = 23.5253
+Rectangle a = 9 b = 3 S = 27
+Circle r = 3 S = 28.2743
+Circle r = 3 S = 28.2743
+Circle r = 8 S = 201.062
+
+*/
